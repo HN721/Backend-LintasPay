@@ -14,8 +14,12 @@ type userRepository struct {
 func NewUserRepository(db *gorm.DB) UserRepository {
 	return &userRepository{DB: db}
 }
-func (u *userRepository) Register(data *domain.User) error {
-	return u.DB.Create(data).Error
+func (u *userRepository) Register(data *domain.User) (*domain.User, error) {
+	if err := u.DB.Create(data).Error; err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }
 func (u *userRepository) FindEmail(email string) (*domain.User, error) {
 	var user domain.User

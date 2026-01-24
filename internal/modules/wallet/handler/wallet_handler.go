@@ -28,9 +28,9 @@ func (h *WalletHandler) Create(c *gin.Context) {
 		})
 		return
 	}
-
+	User := c.GetUint("user_id")
 	wallet := &domain.Wallet{
-		UserID:  req.UserID,
+		UserID:  User,
 		Balance: 0,
 	}
 
