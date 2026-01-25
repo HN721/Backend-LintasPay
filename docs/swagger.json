@@ -95,7 +95,7 @@
                 }
             }
         },
-        "/transactions/history": {
+        "/trx/history": {
             "post": {
                 "security": [
                     {
@@ -146,7 +146,7 @@
                 }
             }
         },
-        "/transactions/top-up": {
+        "/trx/top-up": {
             "post": {
                 "security": [
                     {
@@ -197,7 +197,7 @@
                 }
             }
         },
-        "/transactions/transfer": {
+        "/trx/transfer": {
             "post": {
                 "security": [
                     {

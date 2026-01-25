@@ -38,7 +38,7 @@ type TransferRequest struct {
 // @Failure 400 {object} dto.ErrorResponse
 // @Failure 401 {object} dto.ErrorResponse
 // @Security BearerAuth
-// @Router /transactions/top-up [post]
+// @Router /trx/top-up [post]
 func (h *TransactionHandler) TopUp(c *gin.Context) {
 	var req TopUpRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -77,7 +77,7 @@ func (h *TransactionHandler) TopUp(c *gin.Context) {
 // @Failure 400 {object} dto.ErrorResponse
 // @Failure 401 {object} dto.ErrorResponse
 // @Security BearerAuth
-// @Router /transactions/transfer [post]
+// @Router /trx/transfer [post]
 func (h *TransactionHandler) Transfer(c *gin.Context) {
 	var req TransferRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -114,7 +114,7 @@ func (h *TransactionHandler) Transfer(c *gin.Context) {
 // @Failure 400 {object} dto.ErrorResponse
 // @Failure 401 {object} dto.ErrorResponse
 // @Security BearerAuth
-// @Router /transactions/history [post]
+// @Router /trx/history [post]
 func (h *TransactionHandler) HistoryTransaction(c *gin.Context) {
 	var req dto.HistoryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

@@ -101,7 +101,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/transactions/history": {
+        "/trx/history": {
             "post": {
                 "security": [
                     {
@@ -152,7 +152,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/transactions/top-up": {
+        "/trx/top-up": {
             "post": {
                 "security": [
                     {
@@ -203,7 +203,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/transactions/transfer": {
+        "/trx/transfer": {
             "post": {
                 "security": [
                     {

@@ -148,7 +148,7 @@ paths:
       summary: Register user
       tags:
       - Auth
-  /transactions/history:
+  /trx/history:
     post:
       consumes:
       - application/json
@@ -180,7 +180,7 @@ paths:
       summary: Transaction History
       tags:
       - Transaction
-  /transactions/top-up:
+  /trx/top-up:
     post:
       consumes:
       - application/json
@@ -212,7 +212,7 @@ paths:
       summary: Top Up Wallet
       tags:
       - Transaction
-  /transactions/transfer:
+  /trx/transfer:
     post:
       consumes:
       - application/json
