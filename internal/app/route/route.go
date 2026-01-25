@@ -5,10 +5,13 @@ import (
 	"lintaspay/internal/app/middleware"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func SetupRouter(c *container.Container) *gin.Engine {
 	r := gin.Default()
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// USER / AUTH ROUTES
 	auth := r.Group("/auth")
@@ -30,6 +33,7 @@ func SetupRouter(c *container.Container) *gin.Engine {
 	{
 		transactions.POST("/top-up", c.Trx.TrxHandler.TopUp)
 		transactions.POST("/transfer", c.Trx.TrxHandler.Transfer)
+		transactions.GET("/history", c.Trx.TrxHandler.HistoryTransaction)
 
 	}
 

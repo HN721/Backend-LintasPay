@@ -23,8 +23,8 @@ func NewAuthUsecase(repo repository.UserRepository, wallet walletRepo.WalletRepo
 	return &authUsecase{repo: repo, wallet: wallet}
 }
 func (h *authUsecase) Register(name, email, password string) error {
-	existing, err := h.repo.FindEmail(email)
-	if err != nil && existing != nil {
+	_, err := h.repo.FindEmail(email)
+	if err == nil {
 		return errors.New("email already registered")
 	}
 

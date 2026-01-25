@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"lintaspay/internal/dto"
 	"lintaspay/internal/modules/wallet/domain"
 	"lintaspay/internal/modules/wallet/usecase"
 	"net/http"
@@ -17,14 +18,25 @@ func NewWalletHandler(uc usecase.WalletUsecase) *WalletHandler {
 		UseCase: uc,
 	}
 }
+
+// Create Wallet godoc
+// @Summary Create wallet
+// @Description Create wallet for authenticated user
+// @Tags Wallet
+// @Accept json
+// @Produce json
+// @Param request body dto.CreateWalletRequest true "Create Wallet Request"
+// @Success 201 {object} dto.SuccessResponse
+// @Failure 400 {object} dto.ErrorResponse
+// @Failure 401 {object} dto.ErrorResponse
+// @Security BearerAuth
+// @Router /wallets [post]
 func (h *WalletHandler) Create(c *gin.Context) {
-	var req struct {
-		UserID uint `json:"user_id" binding:"required"`
-	}
+	var req dto.CreateWalletRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
 		})
 		return
 	}
@@ -35,13 +47,13 @@ func (h *WalletHandler) Create(c *gin.Context) {
 	}
 
 	if err := h.UseCase.Create(wallet); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "wallet created",
+	c.JSON(http.StatusCreated, dto.SuccessResponse{
+		Message: "wallet created",
 	})
 }

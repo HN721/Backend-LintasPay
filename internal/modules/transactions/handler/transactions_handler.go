@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"lintaspay/internal/dto"
 	"lintaspay/internal/modules/transactions/usecase"
 	"lintaspay/pkg/refrence"
 	"net/http"
@@ -26,11 +27,23 @@ type TransferRequest struct {
 	Amount   int64 `json:"amount" binding:"required,min=1"`
 }
 
+// TopUp godoc
+// @Summary Top Up Wallet
+// @Description Add balance to wallet
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Param request body TopUpRequest true "Top Up Request"
+// @Success 200 {object} dto.TransactionSuccessResponse
+// @Failure 400 {object} dto.ErrorResponse
+// @Failure 401 {object} dto.ErrorResponse
+// @Security BearerAuth
+// @Router /transactions/top-up [post]
 func (h *TransactionHandler) TopUp(c *gin.Context) {
 	var req TopUpRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
 		})
 		return
 	}
@@ -41,22 +54,35 @@ func (h *TransactionHandler) TopUp(c *gin.Context) {
 	ref := refrence.GenerateReference("TOPUP")
 
 	if err := h.UseCase.TopUp(userID, req.Amount, ref); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message":   "top up success",
-		"reference": ref,
+	c.JSON(http.StatusOK, dto.TransactionSuccessResponse{
+		Message:   "top up success",
+		Reference: ref,
 	})
 }
+
+// Transfer godoc
+// @Summary Transfer Balance
+// @Description Transfer balance to another user
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Param request body TransferRequest true "Transfer Request"
+// @Success 200 {object} dto.TransactionSuccessResponse
+// @Failure 400 {object} dto.ErrorResponse
+// @Failure 401 {object} dto.ErrorResponse
+// @Security BearerAuth
+// @Router /transactions/transfer [post]
 func (h *TransactionHandler) Transfer(c *gin.Context) {
 	var req TransferRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
 		})
 		return
 	}
@@ -65,14 +91,48 @@ func (h *TransactionHandler) Transfer(c *gin.Context) {
 	ref := refrence.GenerateReference("TRF")
 
 	if err := h.UseCase.Transfer(fromUserID, req.ToUserID, req.Amount, ref); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message":   "transfer success",
-		"reference": ref,
+	c.JSON(http.StatusOK, dto.TransactionSuccessResponse{
+		Message:   "transfer success",
+		Reference: ref,
+	})
+}
+
+// HistoryTransaction godoc
+// @Summary Transaction History
+// @Description Get transaction history by wallet ID
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Param request body dto.HistoryRequest true "History Request"
+// @Success 200 {object} dto.HistoryResponse
+// @Failure 400 {object} dto.ErrorResponse
+// @Failure 401 {object} dto.ErrorResponse
+// @Security BearerAuth
+// @Router /transactions/history [post]
+func (h *TransactionHandler) HistoryTransaction(c *gin.Context) {
+	var req dto.HistoryRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+	data, err := h.UseCase.History(req.WalletID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.HistoryResponse{
+		Success: "Success Get Data",
+		Data:    data,
 	})
 }

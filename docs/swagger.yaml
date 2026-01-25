@@ -1,0 +1,279 @@
+basePath: /
+definitions:
+  dto.CreateWalletRequest:
+    properties:
+      user_id:
+        example: 1
+        type: integer
+    type: object
+  dto.ErrorResponse:
+    properties:
+      error:
+        example: email already registered
+        type: string
+    type: object
+  dto.HistoryRequest:
+    properties:
+      wallet_id:
+        example: 1
+        type: integer
+    required:
+    - wallet_id
+    type: object
+  dto.HistoryResponse:
+    properties:
+      data: {}
+      success:
+        type: string
+    type: object
+  dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.LoginResponse:
+    properties:
+      data: {}
+      message:
+        example: Successfully Login
+        type: string
+      status:
+        example: true
+        type: boolean
+      token:
+        type: string
+    type: object
+  dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  dto.TransactionSuccessResponse:
+    properties:
+      message:
+        type: string
+      reference:
+        type: string
+    type: object
+  handler.TopUpRequest:
+    properties:
+      amount:
+        minimum: 1
+        type: integer
+    required:
+    - amount
+    type: object
+  handler.TransferRequest:
+    properties:
+      amount:
+        minimum: 1
+        type: integer
+      to_user_id:
+        type: integer
+    required:
+    - amount
+    - to_user_id
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Dokumentasi API Backend
+  title: Backend API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Login user
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register new user with name, email, and password
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Register user
+      tags:
+      - Auth
+  /transactions/history:
+    post:
+      consumes:
+      - application/json
+      description: Get transaction history by wallet ID
+      parameters:
+      - description: History Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.HistoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.HistoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Transaction History
+      tags:
+      - Transaction
+  /transactions/top-up:
+    post:
+      consumes:
+      - application/json
+      description: Add balance to wallet
+      parameters:
+      - description: Top Up Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.TopUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TransactionSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Top Up Wallet
+      tags:
+      - Transaction
+  /transactions/transfer:
+    post:
+      consumes:
+      - application/json
+      description: Transfer balance to another user
+      parameters:
+      - description: Transfer Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.TransferRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TransactionSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Transfer Balance
+      tags:
+      - Transaction
+  /wallets:
+    post:
+      consumes:
+      - application/json
+      description: Create wallet for authenticated user
+      parameters:
+      - description: Create Wallet Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateWalletRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create wallet
+      tags:
+      - Wallet
+swagger: "2.0"

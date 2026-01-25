@@ -2,6 +2,7 @@ package main
 
 import (
 	"lintaspay/config"
+	_ "lintaspay/docs"
 	"lintaspay/internal/app/container"
 	router "lintaspay/internal/app/route"
 	trx "lintaspay/internal/modules/transactions/domain"
@@ -13,6 +14,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title Backend API
+// @version 1.0
+// @description Dokumentasi API Backend
+// @host localhost:8080
+// @BasePath /
 func main() {
 	err := godotenv.Load()
 	if err != nil {
