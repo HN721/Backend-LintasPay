@@ -147,7 +147,7 @@ paths:
       tags:
       - Auth
   /trx/history:
-    post:
+    get:
       consumes:
       - application/json
       description: Get transaction history by wallet ID

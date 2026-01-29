@@ -102,7 +102,7 @@ const docTemplate = `{
             }
         },
         "/trx/history": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "BearerAuth": []

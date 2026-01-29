@@ -114,7 +114,7 @@ func (h *TransactionHandler) Transfer(c *gin.Context) {
 // @Failure 400 {object} dto.ErrorResponse
 // @Failure 401 {object} dto.ErrorResponse
 // @Security BearerAuth
-// @Router /trx/history [post]
+// @Router /trx/history [get]
 func (h *TransactionHandler) HistoryTransaction(c *gin.Context) {
 	var req dto.HistoryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

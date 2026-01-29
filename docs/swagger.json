@@ -94,7 +94,7 @@
             }
         },
         "/trx/history": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "BearerAuth": []
