@@ -30,7 +30,7 @@ func NewWalletHandler(uc usecase.WalletUsecase) *WalletHandler {
 // @Failure 400 {object} dto.ErrorResponse
 // @Failure 401 {object} dto.ErrorResponse
 // @Security BearerAuth
-// @Router /wallets [post]
+// @Router /wallet/create [post]
 func (h *WalletHandler) Create(c *gin.Context) {
 	var req dto.CreateWalletRequest
 

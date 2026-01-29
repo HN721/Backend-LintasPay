@@ -242,7 +242,7 @@ paths:
       summary: Transfer Balance
       tags:
       - Transaction
-  /wallets:
+  /wallet/create:
     post:
       consumes:
       - application/json

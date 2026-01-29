@@ -254,7 +254,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/wallets": {
+        "/wallet/create": {
             "post": {
                 "security": [
                     {
