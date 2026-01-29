@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   dto.CreateWalletRequest:
     properties:
@@ -85,7 +84,6 @@ definitions:
     - amount
     - to_user_id
     type: object
-host: localhost:8080
 info:
   contact: {}
   description: Dokumentasi API Backend
@@ -276,4 +274,9 @@ paths:
       summary: Create wallet
       tags:
       - Wallet
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
